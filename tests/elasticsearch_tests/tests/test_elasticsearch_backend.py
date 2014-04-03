@@ -772,6 +772,19 @@ class LiveElasticsearchSearchQuerySetTestCase(TestCase):
         self.assertEqual(sqs.query.build_query(), u'("pants\\:rule")')
         self.assertEqual(len(sqs), 0)
 
+    def test_values_queries(self):
+        # TODO: add test for multivalued fields
+
+        self.assertEqual(
+            [v['pk'] for v in self.sqs.values('pk')],
+            [v.pk for v in self.sqs.all()])
+
+        self.assertEqual(
+            [(v['name'], v['pub_date'])
+             for v in self.sqs.values('name', 'pub_date')],
+            [(v.name, v.pub_date)
+             for v in self.sqs.all()])
+
     # Regressions
 
     @unittest.expectedFailure
