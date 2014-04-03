@@ -588,8 +588,10 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
                         if string_key in index.fields:
                             if not index.fields[string_key].is_multivalued:
                                 source[key] = value = value[0]
-                        else:
+                        elif value:
                             source[key] = value = value[0]
+                        else:
+                            source[key] = value = None
 
                     if string_key in index.fields and hasattr(index.fields[string_key], 'convert'):
                         additional_fields[string_key] = index.fields[string_key].convert(value)
