@@ -570,7 +570,7 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
         for raw_result in raw_results.get('hits', {}).get('hits', []):
 
             if 'fields' in raw_result:
-                source = raw_result['fields']
+                source = raw_result['fields']                
             else:
                 source = raw_result.get('_source', {})
 
@@ -587,9 +587,9 @@ class ElasticsearchSearchBackend(BaseSearchBackend):
                     if isinstance(value, list):
                         if string_key in index.fields:
                             if not index.fields[string_key].is_multivalued:
-                                value = value[0]
+                                source[key] = value = value[0]
                         else:
-                            value = value[0]
+                            source[key] = value = value[0]
 
                     if string_key in index.fields and hasattr(index.fields[string_key], 'convert'):
                         additional_fields[string_key] = index.fields[string_key].convert(value)
